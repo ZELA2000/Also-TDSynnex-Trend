@@ -34,11 +34,11 @@ graph TB
     Proxy --> TDSynnex
     Proxy --> Trend
     
-    style Client fill:#e1f5ff,stroke:#01579b,stroke-width:2px
-    style Proxy fill:#fff3e0,stroke:#e65100,stroke-width:3px
-    style Also fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    style TDSynnex fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
-    style Trend fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+    style Client fill:#4A90E2,stroke:#2E5C8A,stroke-width:4px,color:#fff
+    style Proxy fill:#FF9800,stroke:#E65100,stroke-width:5px,color:#000
+    style Also fill:#9C27B0,stroke:#6A1B9A,stroke-width:4px,color:#fff
+    style TDSynnex fill:#4CAF50,stroke:#2E7D32,stroke-width:4px,color:#fff
+    style Trend fill:#E91E63,stroke:#AD1457,stroke-width:4px,color:#fff
 ```
 
 ## Key Features

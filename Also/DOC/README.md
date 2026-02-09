@@ -53,13 +53,13 @@ graph TB
     Subscriptions -.->|Uses| Catalog
     Reports -.->|Aggregates| Subscriptions
     
-    style Client fill:#e1f5ff,stroke:#01579b,stroke-width:2px
-    style API fill:#fff3e0,stroke:#e65100,stroke-width:3px
-    style Auth fill:#ffebee,stroke:#c62828,stroke-width:2px
-    style Accounts fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
-    style Catalog fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    style Subscriptions fill:#e1f5ff,stroke:#01579b,stroke-width:2px
-    style Reports fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style Client fill:#4A90E2,stroke:#2E5C8A,stroke-width:4px,color:#fff
+    style API fill:#FF9800,stroke:#E65100,stroke-width:5px,color:#000
+    style Auth fill:#F44336,stroke:#C62828,stroke-width:4px,color:#fff
+    style Accounts fill:#4CAF50,stroke:#2E7D32,stroke-width:4px,color:#fff
+    style Catalog fill:#9C27B0,stroke:#6A1B9A,stroke-width:4px,color:#fff
+    style Subscriptions fill:#2196F3,stroke:#1565C0,stroke-width:4px,color:#fff
+    style Reports fill:#FFC107,stroke:#F57F17,stroke-width:4px,color:#000
 ```
 
 ## 🚀 Quick Start
@@ -271,17 +271,17 @@ graph TD
     User2 --> Sub2[Subscription 2<br/>Azure x5]
     User3 --> Sub3[Subscription 3<br/>Dynamics x2]
     
-    style Reseller fill:#e1f5ff,stroke:#01579b,stroke-width:3px
-    style Company1 fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
-    style Company2 fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
-    style Dept1 fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style Dept2 fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style User1 fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    style User2 fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    style User3 fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    style Sub1 fill:#fce4ec,stroke:#880e4f,stroke-width:2px
-    style Sub2 fill:#fce4ec,stroke:#880e4f,stroke-width:2px
-    style Sub3 fill:#fce4ec,stroke:#880e4f,stroke-width:2px
+    style Reseller fill:#2196F3,stroke:#1565C0,stroke-width:5px,color:#fff
+    style Company1 fill:#4CAF50,stroke:#2E7D32,stroke-width:4px,color:#fff
+    style Company2 fill:#4CAF50,stroke:#2E7D32,stroke-width:4px,color:#fff
+    style Dept1 fill:#FF9800,stroke:#E65100,stroke-width:4px,color:#000
+    style Dept2 fill:#FF9800,stroke:#E65100,stroke-width:4px,color:#000
+    style User1 fill:#9C27B0,stroke:#6A1B9A,stroke-width:4px,color:#fff
+    style User2 fill:#9C27B0,stroke:#6A1B9A,stroke-width:4px,color:#fff
+    style User3 fill:#9C27B0,stroke:#6A1B9A,stroke-width:4px,color:#fff
+    style Sub1 fill:#E91E63,stroke:#AD1457,stroke-width:4px,color:#fff
+    style Sub2 fill:#E91E63,stroke:#AD1457,stroke-width:4px,color:#fff
+    style Sub3 fill:#E91E63,stroke:#AD1457,stroke-width:4px,color:#fff
 ```
 
 ## 🔄 Lifecycle Sottoscrizione

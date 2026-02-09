@@ -88,10 +88,10 @@ graph TD
     Next -->|No| Wait[Wait 5 min]
     Wait --> Start
     
-    style Start fill:#e1f5ff,stroke:#01579b,stroke-width:2px
-    style Priority fill:#ffebee,stroke:#c62828,stroke-width:2px
-    style Standard fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style IsolateEP fill:#ffcdd2,stroke:#c62828,stroke-width:3px
+    style Start fill:#4A90E2,stroke:#2E5C8A,stroke-width:4px,color:#fff
+    style Priority fill:#F44336,stroke:#C62828,stroke-width:4px,color:#fff
+    style Standard fill:#FFC107,stroke:#F57F17,stroke-width:4px,color:#000
+    style IsolateEP fill:#E91E63,stroke:#AD1457,stroke-width:5px,color:#fff
 ```
 
 ### 1. List Critical Alerts

@@ -51,12 +51,12 @@ graph TB
     Workbench -.->|Correlation| Endpoints
     Actions -.->|Execute on| Endpoints
     
-    style Client fill:#e1f5ff,stroke:#01579b,stroke-width:2px
-    style API fill:#fff3e0,stroke:#e65100,stroke-width:3px
-    style Workbench fill:#fce4ec,stroke:#880e4f,stroke-width:2px
-    style Endpoints fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
-    style TI fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    style Actions fill:#ffebee,stroke:#c62828,stroke-width:2px
+    style Client fill:#4A90E2,stroke:#2E5C8A,stroke-width:4px,color:#fff
+    style API fill:#FF9800,stroke:#E65100,stroke-width:5px,color:#000
+    style Workbench fill:#E91E63,stroke:#AD1457,stroke-width:4px,color:#fff
+    style Endpoints fill:#4CAF50,stroke:#2E7D32,stroke-width:4px,color:#fff
+    style TI fill:#9C27B0,stroke:#6A1B9A,stroke-width:4px,color:#fff
+    style Actions fill:#F44336,stroke:#C62828,stroke-width:4px,color:#fff
 ```
 
 ## 🚀 Quick Start
@@ -263,9 +263,9 @@ graph LR
     I --> J
     J --> A
     
-    style A fill:#e1f5ff,stroke:#01579b,stroke-width:2px
-    style H fill:#ffebee,stroke:#c62828,stroke-width:2px
-    style I fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style A fill:#4A90E2,stroke:#2E5C8A,stroke-width:4px,color:#fff
+    style H fill:#F44336,stroke:#C62828,stroke-width:4px,color:#fff
+    style I fill:#FFC107,stroke:#F57F17,stroke-width:4px,color:#000
 ```
 
 ## 🔧 Troubleshooting

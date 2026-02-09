@@ -19,13 +19,13 @@ graph LR
     F --> J[Purchase<br/>Update<br/>Cancel]
     G --> K[Billing Reports<br/>Credit Limits]
     
-    style A fill:#e1f5ff,stroke:#01579b,stroke-width:2px
-    style B fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style C fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    style D fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
-    style E fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
-    style F fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
-    style G fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px
+    style A fill:#4A90E2,stroke:#2E5C8A,stroke-width:4px,color:#fff
+    style B fill:#FF9800,stroke:#E65100,stroke-width:4px,color:#000
+    style C fill:#9C27B0,stroke:#6A1B9A,stroke-width:4px,color:#fff
+    style D fill:#4CAF50,stroke:#2E7D32,stroke-width:4px,color:#fff
+    style E fill:#2196F3,stroke:#1565C0,stroke-width:4px,color:#fff
+    style F fill:#E91E63,stroke:#AD1457,stroke-width:4px,color:#fff
+    style G fill:#FFC107,stroke:#F57F17,stroke-width:4px,color:#000
 ```
 
 ## Workflow Guides

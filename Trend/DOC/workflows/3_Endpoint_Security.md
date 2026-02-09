@@ -39,9 +39,8 @@ sequenceDiagram
     
     Note over SOAR,Network: Back to Normal
     
-    style SOAR fill:#e1f5ff,stroke:#01579b,stroke-width:2px
-    style API fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style Agent fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+    Note right of SOAR: Color indicates role:<br/>Blue=Analyst<br/>Orange=API<br/>Green=Agent
+    Note left of Network: Red highlight for<br/>critical isolation action
 ```
 
 ## Authentication
@@ -97,12 +96,12 @@ graph TD
     
     Complete --> End[End]
     
-    style Start fill:#e1f5ff,stroke:#01579b,stroke-width:2px
-    style AutoIsolate fill:#ffebee,stroke:#c62828,stroke-width:3px
-    style Isolate fill:#ffcdd2,stroke:#c62828,stroke-width:2px
-    style Restore fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
-    style Reimage fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style Complete fill:#e0f2f1,stroke:#00695c,stroke-width:2px
+    style Start fill:#4A90E2,stroke:#2E5C8A,stroke-width:4px,color:#fff
+    style AutoIsolate fill:#F44336,stroke:#C62828,stroke-width:5px,color:#fff
+    style Isolate fill:#E91E63,stroke:#AD1457,stroke-width:4px,color:#fff
+    style Restore fill:#4CAF50,stroke:#2E7D32,stroke-width:4px,color:#fff
+    style Reimage fill:#FF9800,stroke:#E65100,stroke-width:4px,color:#000
+    style Complete fill:#00BCD4,stroke:#006064,stroke-width:4px,color:#fff
 ```
 
 ### 1. List Managed Endpoints

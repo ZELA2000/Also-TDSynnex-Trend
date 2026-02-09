@@ -328,14 +328,14 @@ graph TD
     P --> R[End: Customer Onboarded]
     Q --> R
     
-    style A fill:#e1f5ff,stroke:#01579b,stroke-width:2px
-    style R fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
-    style C fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style F fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style J fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style M fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style P fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style Q fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style A fill:#4A90E2,stroke:#2E5C8A,stroke-width:4px,color:#fff
+    style R fill:#4CAF50,stroke:#2E7D32,stroke-width:4px,color:#fff
+    style C fill:#FF9800,stroke:#E65100,stroke-width:4px,color:#000
+    style F fill:#FFC107,stroke:#F57F17,stroke-width:4px,color:#000
+    style J fill:#9C27B0,stroke:#6A1B9A,stroke-width:4px,color:#fff
+    style M fill:#E91E63,stroke:#AD1457,stroke-width:4px,color:#fff
+    style P fill:#2196F3,stroke:#1565C0,stroke-width:4px,color:#fff
+    style Q fill:#2196F3,stroke:#1565C0,stroke-width:4px,color:#fff
 ```
 
 ---
