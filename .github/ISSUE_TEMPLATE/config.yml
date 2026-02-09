@@ -1,0 +1,17 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📖 Documentazione Also
+    url: https://github.com/YOUR_USERNAME/YOUR_REPO/tree/main/Also/DOC
+    about: Consulta la documentazione completa dell'API Also Marketplace
+  - name: 📖 Documentazione TDSynnex
+    url: https://github.com/YOUR_USERNAME/YOUR_REPO/tree/main/TDSynnex/DOC
+    about: Consulta la documentazione completa dell'API TDSynnex StreamOne
+  - name: 📖 Documentazione Trend
+    url: https://github.com/YOUR_USERNAME/YOUR_REPO/tree/main/Trend/DOC
+    about: Consulta la documentazione completa dell'API Trend Vision One
+  - name: 📖 Documentazione Proxy
+    url: https://github.com/YOUR_USERNAME/YOUR_REPO/tree/main/Proxy/DOC
+    about: Consulta la documentazione del Unified API Proxy
+  - name: 💬 Discussions
+    url: https://github.com/YOUR_USERNAME/YOUR_REPO/discussions
+    about: Per domande generali, idee e discussioni con la community
