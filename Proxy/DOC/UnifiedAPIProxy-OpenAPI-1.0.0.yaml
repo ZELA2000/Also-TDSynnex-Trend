@@ -1,0 +1,546 @@
+openapi: 3.0.3
+info:
+  title: Unified API Proxy
+  description: |
+    Unified proxy service for accessing Also Marketplace, TDSynnex StreamOne, and Trend Vision One APIs through a single gateway.
+    
+    ## Features
+    - **Single Entry Point**: One proxy for three different APIs
+    - **Automatic Request Forwarding**: Transparent proxy with header and body forwarding
+    - **Centralized Logging**: Winston-based logging for all requests
+    - **Health Monitoring**: Built-in health checks and status endpoints
+    
+    ## Architecture
+    ```
+    Client Application → Unified Proxy (Port 4000) → Backend APIs
+                         ├─ /api/also/*      → Also API (Port 3001)
+                         ├─ /api/tdsynnex/*  → TDSynnex API (Port 3002)
+                         └─ /api/trend/*     → Trend API (Port 3003)
+    ```
+    
+    ## Authentication
+    The proxy transparently forwards authentication headers to backend APIs:
+    - **Also**: `Authenticate: CCPSessionId <token>`
+    - **TDSynnex**: `Authorization: Bearer <token>`
+    - **Trend**: `Authorization: Bearer <api_key>`
+    
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@company.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:4000
+    description: Local development server
+  - url: https://api.company.com
+    description: Production server
+
+tags:
+  - name: Health
+    description: Health check and status endpoints
+  - name: Also Marketplace
+    description: Proxy endpoints for Also Marketplace API
+  - name: TDSynnex StreamOne
+    description: Proxy endpoints for TDSynnex StreamOne API
+  - name: Trend Vision One
+    description: Proxy endpoints for Trend Vision One API
+
+paths:
+  /:
+    get:
+      summary: Root endpoint
+      description: Returns basic information about the proxy service
+      tags:
+        - Health
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Unified API Proxy
+                  version:
+                    type: string
+                    example: 1.0.0
+                  description:
+                    type: string
+                    example: Unified proxy for Also, TDSynnex, and Trend Vision One APIs
+                  endpoints:
+                    type: object
+                    properties:
+                      health:
+                        type: string
+                        example: /api/health
+                      status:
+                        type: string
+                        example: /api/status
+                      also:
+                        type: string
+                        example: /api/also/*
+                      tdsynnex:
+                        type: string
+                        example: /api/tdsynnex/*
+                      trend:
+                        type: string
+                        example: /api/trend/*
+                  documentation:
+                    type: string
+                    example: See README.md for detailed API documentation
+
+  /api/health:
+    get:
+      summary: Health check
+      description: Check if the proxy service is running and responsive
+      tags:
+        - Health
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [ok, degraded, unhealthy]
+                    example: ok
+                  timestamp:
+                    type: string
+                    format: date-time
+                    example: 2026-02-06T10:30:15.123Z
+                  service:
+                    type: string
+                    example: Unified API Proxy
+                  uptime:
+                    type: number
+                    description: Service uptime in seconds
+                    example: 3665.789
+                  apis:
+                    type: object
+                    properties:
+                      also:
+                        type: string
+                        enum: [available, unavailable]
+                        example: available
+                      tdsynnex:
+                        type: string
+                        enum: [available, unavailable]
+                        example: available
+                      trend:
+                        type: string
+                        enum: [available, unavailable]
+                        example: available
+
+  /api/status:
+    get:
+      summary: API status
+      description: Get detailed status and configuration information
+      tags:
+        - Health
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                    example: 1.0.0
+                  apis:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: Also Marketplace
+                        prefix:
+                          type: string
+                          example: /api/also
+                        status:
+                          type: string
+                          enum: [active, inactive]
+                          example: active
+                        description:
+                          type: string
+                          example: Marketplace, subscriptions, account management
+
+  /api/also/{path}:
+    x-summary: Also Marketplace proxy
+    parameters:
+      - name: path
+        in: path
+        required: true
+        description: The path to forward to Also Marketplace API
+        schema:
+          type: string
+        example: auth/login
+      - name: Authenticate
+        in: header
+        description: Also session token (format CCPSessionId <token>)
+        schema:
+          type: string
+        example: CCPSessionId C9C5MlqrpMwG/6bQ3mAVlm0Z6hi/eh1vsQs4i1I/g==
+    get:
+      summary: Proxy GET request to Also API
+      description: Forwards GET request to Also Marketplace API at http://localhost:3001/api/{path}
+      tags:
+        - Also Marketplace
+      responses:
+        '200':
+          description: Successful response from Also API
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailableError'
+    post:
+      summary: Proxy POST request to Also API
+      description: Forwards POST request to Also Marketplace API
+      tags:
+        - Also Marketplace
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Successful response from Also API
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    patch:
+      summary: Proxy PATCH request to Also API
+      description: Forwards PATCH request to Also Marketplace API
+      tags:
+        - Also Marketplace
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Successful response from Also API
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      summary: Proxy DELETE request to Also API
+      description: Forwards DELETE request to Also Marketplace API
+      tags:
+        - Also Marketplace
+      responses:
+        '200':
+          description: Successful response from Also API
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /api/tdsynnex/{path}:
+    x-summary: TDSynnex StreamOne proxy
+    parameters:
+      - name: path
+        in: path
+        required: true
+        description: The path to forward to TDSynnex StreamOne API
+        schema:
+          type: string
+        example: customers
+      - name: Authorization
+        in: header
+        description: OAuth2 Bearer token
+        schema:
+          type: string
+        example: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...
+    get:
+      summary: Proxy GET request to TDSynnex API
+      description: Forwards GET request to TDSynnex StreamOne API at http://localhost:3002/api/{path}
+      tags:
+        - TDSynnex StreamOne
+      responses:
+        '200':
+          description: Successful response from TDSynnex API
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailableError'
+    post:
+      summary: Proxy POST request to TDSynnex API
+      description: Forwards POST request to TDSynnex StreamOne API
+      tags:
+        - TDSynnex StreamOne
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Successful response from TDSynnex API
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    patch:
+      summary: Proxy PATCH request to TDSynnex API
+      description: Forwards PATCH request to TDSynnex StreamOne API
+      tags:
+        - TDSynnex StreamOne
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Successful response from TDSynnex API
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      summary: Proxy DELETE request to TDSynnex API
+      description: Forwards DELETE request to TDSynnex StreamOne API
+      tags:
+        - TDSynnex StreamOne
+      responses:
+        '200':
+          description: Successful response from TDSynnex API
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /api/trend/{path}:
+    x-summary: Trend Vision One proxy
+    parameters:
+      - name: path
+        in: path
+        required: true
+        description: The path to forward to Trend Vision One API
+        schema:
+          type: string
+        example: alerts
+      - name: Authorization
+        in: header
+        description: Trend API token
+        schema:
+          type: string
+        example: Bearer YOUR_API_TOKEN
+    get:
+      summary: Proxy GET request to Trend API
+      description: Forwards GET request to Trend Vision One API at http://localhost:3003/api/{path}
+      tags:
+        - Trend Vision One
+      responses:
+        '200':
+          description: Successful response from Trend API
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailableError'
+    post:
+      summary: Proxy POST request to Trend API
+      description: Forwards POST request to Trend Vision One API
+      tags:
+        - Trend Vision One
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Successful response from Trend API
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    patch:
+      summary: Proxy PATCH request to Trend API
+      description: Forwards PATCH request to Trend Vision One API
+      tags:
+        - Trend Vision One
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Successful response from Trend API
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      summary: Proxy DELETE request to Trend API
+      description: Forwards DELETE request to Trend Vision One API
+      tags:
+        - Trend Vision One
+      responses:
+        '200':
+          description: Successful response from Trend API
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+components:
+  responses:
+    UnauthorizedError:
+      description: Authentication failed or missing credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            message: Invalid or missing authentication token
+
+    NotFoundError:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            message: Route not found
+
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            message: Internal server error
+
+    ServiceUnavailableError:
+      description: Backend service is unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            message: connect ECONNREFUSED 127.0.0.1:3001
+
+    RateLimitError:
+      description: API rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            message: Too many requests, please try again later
+            error:
+              code: TooManyRequests
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Error message
+        error:
+          type: object
+          description: Additional error details
+        code:
+          type: string
+          description: Error code
+      required:
+        - success
+        - message
+
+  securitySchemes:
+    AlsoSessionToken:
+      type: apiKey
+      in: header
+      name: Authenticate
+      description: |
+        Also Marketplace session token authentication.
+        Format: `CCPSessionId <token>`
+        
+        Obtain token via `/api/also/auth/login`
+
+    OAuth2Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        TDSynnex OAuth2 Bearer token authentication.
+        
+        Obtain token via `/api/tdsynnex/auth/token`
+
+    TrendApiKey:
+      type: http
+      scheme: bearer
+      description: |
+        Trend Vision One API token authentication.
+        
+        Configure in Trend Vision One console
+
+security:
+  - AlsoSessionToken: []
+  - OAuth2Bearer: []
+  - TrendApiKey: []
