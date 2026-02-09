@@ -1,0 +1,660 @@
+openapi: 3.0.3
+info:
+  title: Trend Vision One API
+  description: |
+    Trend Vision One XDR (Extended Detection and Response) API provides comprehensive threat detection, 
+    investigation, and response capabilities across your entire security infrastructure.
+    
+    ## Key Features
+    - **Workbench Alerts**: Manage XDR detection alerts with advanced correlation
+    - **Endpoint Security**: Monitor and manage protected endpoints
+    - **Response Actions**: Automate containment actions (isolate, restore, terminate processes)
+    - **Threat Intelligence**: Access global threat intelligence and IOC data
+    - **Forensic Investigation**: Deep dive into security events and timelines
+    
+    ## Authentication
+    All API requests require an API Key obtained from the Trend Vision One console.
+    Include the key in the `Authorization` header with Bearer scheme:
+    ```
+    Authorization: Bearer YOUR_API_KEY
+    ```
+    
+    ## Regional Data Centers
+    Use the correct base URL for your region:
+    - **United States**: https://api.xdr.trendmicro.com
+    - **Europe (Germany)**: https://api.eu.xdr.trendmicro.com
+    - **Japan**: https://api.xdr.trendmicro.co.jp
+    - **Australia**: https://api.au.xdr.trendmicro.com
+    - **Singapore**: https://api.sg.xdr.trendmicro.com
+    
+    ## Rate Limiting
+    API requests are subject to rate limiting. Monitor response headers for limit information.
+    
+  version: 3.0.0
+  contact:
+    name: Trend Micro Support
+    url: https://success.trendmicro.com
+  license:
+    name: Commercial
+    url: https://www.trendmicro.com/en_us/about/legal.html
+
+servers:
+  - url: https://api.xdr.trendmicro.com
+    description: United States Data Center
+  - url: https://api.eu.xdr.trendmicro.com
+    description: Europe (Germany) Data Center
+  - url: https://api.xdr.trendmicro.co.jp
+    description: Japan Data Center
+  - url: https://api.au.xdr.trendmicro.com
+    description: Australia Data Center
+  - url: https://api.sg.xdr.trendmicro.com
+    description: Singapore Data Center
+
+tags:
+  - name: Authentication
+    description: Test API connectivity and authentication
+  - name: Workbench Alerts
+    description: XDR detection alerts management and investigation
+  - name: Endpoint Security
+    description: Endpoint visibility and management
+  - name: Response Actions
+    description: Automated response and containment actions
+  - name: Threat Intelligence
+    description: IOC lookups and threat data
+
+paths:
+  /v3.0/healthcheck:
+    get:
+      summary: Health check
+      description: Verify API connectivity and service status
+      tags:
+        - Authentication
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: healthy
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /v3.0/workbench/alerts:
+    get:
+      summary: List workbench alerts
+      description: |
+        Retrieve a list of XDR alerts from the Workbench. Supports filtering by time range,
+        severity, status, and other criteria using TMV1-Filter header.
+      tags:
+        - Workbench Alerts
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: startDateTime
+          in: query
+          description: Start of time range (ISO 8601 format)
+          required: true
+          schema:
+            type: string
+            format: date-time
+            example: "2026-02-01T00:00:00Z"
+        - name: endDateTime
+          in: query
+          description: End of time range (ISO 8601 format)
+          schema:
+            type: string
+            format: date-time
+            example: "2026-02-09T23:59:59Z"
+        - name: TMV1-Filter
+          in: header
+          description: |
+            SQL-like filter expression. Examples:
+            - `severity eq 'critical' and status eq 'open'`
+            - `createdDateTime ge 2026-02-08T00:00:00Z`
+            
+            Supported operators: eq, ne, gt, lt, ge, le, and, or
+          schema:
+            type: string
+          example: "severity eq 'critical' and status eq 'open'"
+        - name: top
+          in: query
+          description: Maximum number of results to return
+          schema:
+            type: integer
+            default: 50
+            maximum: 200
+        - name: skip
+          in: query
+          description: Number of results to skip (for pagination)
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: List of alerts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WorkbenchAlert'
+                  count:
+                    type: integer
+                    description: Total number of alerts matching filters
+                  nextLink:
+                    type: string
+                    description: URL for next page of results
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+
+  /v3.0/workbench/alerts/{alertId}:
+    get:
+      summary: Get alert details
+      description: Retrieve detailed information about a specific Workbench alert including impact scope and indicators
+      tags:
+        - Workbench Alerts
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: alertId
+          in: path
+          required: true
+          description: Unique alert identifier (e.g., WB-123-456)
+          schema:
+            type: string
+          example: "WB-123-456-20230101-00001"
+      responses:
+        '200':
+          description: Alert details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkbenchAlertDetail'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+    
+    patch:
+      summary: Update alert status
+      description: Update the status of a Workbench alert (e.g., mark as in progress, closed)
+      tags:
+        - Workbench Alerts
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: alertId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: If-Match
+          in: header
+          description: ETag value for optimistic concurrency control
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum: [new, in_progress, resolved_true_positive, resolved_false_positive, closed]
+                  description: New status for the alert
+                investigationStatus:
+                  type: string
+                  description: Optional investigation classification
+              required:
+                - status
+            example:
+              status: "in_progress"
+      responses:
+        '204':
+          description: Alert updated successfully
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /v3.0/workbench/alerts/{alertId}/notes:
+    post:
+      summary: Add investigation note
+      description: Append a note to an alert for documentation and audit trail
+      tags:
+        - Workbench Alerts
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: alertId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                  description: Note content (max 4000 characters)
+                  maxLength: 4000
+              required:
+                - content
+            example:
+              content: "Investigation initiated. Created ticket #1234 in JIRA."
+      responses:
+        '201':
+          description: Note added successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  noteId:
+                    type: string
+                  createdDateTime:
+                    type: string
+                    format: date-time
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /v3.0/eiqs/endpoints:
+    get:
+      summary: List managed endpoints
+      description: Retrieve a list of endpoints protected by Trend Vision One agents
+      tags:
+        - Endpoint Security
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: TMV1-Filter
+          in: header
+          description: |
+            Filter endpoints. Examples:
+            - `osName eq 'Windows'`
+            - `status eq 'online'`
+            - `riskLevel eq 'high'`
+          schema:
+            type: string
+        - name: top
+          in: query
+          schema:
+            type: integer
+            default: 50
+            maximum: 200
+        - name: skip
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: List of endpoints
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Endpoint'
+                  count:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /v3.0/response/endpoints/isolate:
+    post:
+      summary: Isolate endpoint
+      description: |
+        Isolate an endpoint from the network to contain a threat. The endpoint will only be able
+        to communicate with the Trend Vision One service.
+      tags:
+        - Response Actions
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                agentGuid:
+                  type: string
+                  description: Unique identifier of the endpoint agent
+                  example: "12345678-1234-1234-1234-123456789012"
+                description:
+                  type: string
+                  description: Reason for isolation (for audit trail)
+                  maxLength: 500
+                  example: "Ransomware detection - Alert WB-123-456"
+              required:
+                - agentGuid
+      responses:
+        '201':
+          description: Isolation action initiated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  actionId:
+                    type: string
+                    description: Unique identifier for tracking the action
+                  status:
+                    type: string
+                    enum: [pending, running, succeeded, failed]
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          description: Endpoint not found
+        '429':
+          $ref: '#/components/responses/RateLimitError'
+
+  /v3.0/response/endpoints/restore:
+    post:
+      summary: Restore endpoint connection
+      description: Restore network connectivity for a previously isolated endpoint
+      tags:
+        - Response Actions
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                agentGuid:
+                  type: string
+                  description: Unique identifier of the endpoint agent
+                description:
+                  type: string
+                  description: Reason for restoration
+                  maxLength: 500
+              required:
+                - agentGuid
+            example:
+              agentGuid: "12345678-1234-1234-1234-123456789012"
+              description: "Threat remediated, restoring connectivity"
+      responses:
+        '201':
+          description: Restore action initiated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  actionId:
+                    type: string
+                  status:
+                    type: string
+                    enum: [pending, running, succeeded, failed]
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          description: Endpoint not found
+
+  /v3.0/response/endpoints/terminateProcess:
+    post:
+      summary: Terminate process
+      description: Terminate a running process on an endpoint
+      tags:
+        - Response Actions
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                agentGuid:
+                  type: string
+                processIdentifier:
+                  type: object
+                  properties:
+                    filePath:
+                      type: string
+                      example: "C:\\Windows\\System32\\malware.exe"
+                    fileHashSha1:
+                      type: string
+                description:
+                  type: string
+              required:
+                - agentGuid
+                - processIdentifier
+      responses:
+        '201':
+          description: Process termination initiated
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: |
+        API Key authentication. Obtain your API key from Trend Vision One console:
+        Administration > User Accounts > API Keys
+        
+        Include in requests as: `Authorization: Bearer YOUR_API_KEY`
+
+  schemas:
+    WorkbenchAlert:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique alert identifier
+          example: "WB-123-456-20230101-00001"
+        modelName:
+          type: string
+          description: Detection model name
+          example: "Ransomware"
+        score:
+          type: integer
+          description: Alert severity score (0-100)
+          minimum: 0
+          maximum: 100
+        severity:
+          type: string
+          enum: [low, medium, high, critical]
+        status:
+          type: string
+          enum: [new, in_progress, resolved_true_positive, resolved_false_positive, closed]
+        createdDateTime:
+          type: string
+          format: date-time
+        impactScope:
+          type: object
+          properties:
+            desktopCount:
+              type: integer
+            serverCount:
+              type: integer
+            accountCount:
+              type: integer
+
+    WorkbenchAlertDetail:
+      allOf:
+        - $ref: '#/components/schemas/WorkbenchAlert'
+        - type: object
+          properties:
+            description:
+              type: string
+            indicators:
+              type: array
+              items:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum: [ip, domain, url, fileSha1, fileSha256, email]
+                  value:
+                    type: string
+                  confidence:
+                    type: string
+                    enum: [low, medium, high]
+            impactedEntities:
+              type: array
+              items:
+                type: object
+                properties:
+                  entityType:
+                    type: string
+                    enum: [endpoint, account, email, server]
+                  entityValue:
+                    type: string
+
+    Endpoint:
+      type: object
+      properties:
+        agentGuid:
+          type: string
+          description: Unique endpoint identifier
+        endpointName:
+          type: string
+          description: Computer hostname
+        osName:
+          type: string
+          example: "Windows 11 Pro"
+        osVersion:
+          type: string
+        ip:
+          type: string
+          format: ipv4
+        macAddress:
+          type: string
+        status:
+          type: string
+          enum: [online, offline]
+        isolationStatus:
+          type: string
+          enum: [normal, isolated]
+        agentVersion:
+          type: string
+        lastSeenDateTime:
+          type: string
+          format: date-time
+        riskLevel:
+          type: string
+          enum: [low, medium, high, critical]
+
+  responses:
+    UnauthorizedError:
+      description: Invalid or missing API key
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "Unauthorized"
+                  message:
+                    type: string
+                    example: "Invalid API key"
+
+    ForbiddenError:
+      description: Insufficient permissions or IP not in allow list
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "Forbidden"
+                  message:
+                    type: string
+
+    NotFoundError:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "NotFound"
+                  message:
+                    type: string
+
+    BadRequestError:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "BadRequest"
+                  message:
+                    type: string
+                  details:
+                    type: array
+                    items:
+                      type: object
+
+    RateLimitError:
+      description: API rate limit exceeded
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "TooManyRequests"
+                  message:
+                    type: string
+                    example: "Rate limit exceeded. Retry after 60 seconds."
+
+security:
+  - BearerAuth: []
