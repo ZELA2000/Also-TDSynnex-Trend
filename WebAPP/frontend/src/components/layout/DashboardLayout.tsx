@@ -2,7 +2,6 @@
 
 import { ReactNode } from 'react';
 import Sidebar from './Sidebar';
-import Navbar from './Navbar';
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -15,12 +14,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       <Sidebar />
       
       {/* Main Content */}
-      <div className="flex flex-1 flex-col overflow-hidden">
-        {/* Navbar */}
-        <Navbar />
-        
+      <div className="flex flex-1 flex-col overflow-hidden">        
         {/* Page Content */}
-        <main className="flex-1 overflow-y-auto p-6">
+        <main className="flex-1 overflow-y-auto p-8">
           {children}
         </main>
       </div>

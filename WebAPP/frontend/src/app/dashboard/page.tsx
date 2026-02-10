@@ -1,9 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
+import { UserMenu } from '@/components/auth/UserMenu';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { ArrowUpRight, ArrowDownRight, ShoppingCart, Package, Users, Shield } from 'lucide-react';
-import { unifiedApi } from '@/lib/api';
+import Link from 'next/link';
 
 interface DashboardStats {
   totalSubscriptions: number;
@@ -28,13 +30,8 @@ export default function DashboardPage() {
   useEffect(() => {
     async function loadDashboard() {
       try {
-        const response = await unifiedApi.getDashboardStats();
-        if (response.success && response.data) {
-          setStats(response.data);
-        }
-      } catch (error) {
-        console.error('Failed to load dashboard stats:', error);
-        // Set mock data for demo
+        // TODO: Implement /dashboard/stats endpoint
+        // For now, use mock data
         setStats({
           totalSubscriptions: 248,
           activeSubscriptions: 231,
@@ -43,6 +40,8 @@ export default function DashboardPage() {
           criticalAlerts: 3,
           subscriptionGrowth: 12.5,
         });
+      } catch (error) {
+        console.error('Failed to load dashboard stats:', error);
       } finally {
         setLoading(false);
       }
@@ -108,14 +107,16 @@ export default function DashboardPage() {
   }
 
   return (
+    <ProtectedRoute>
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-600 mt-1">Welcome back! Here's what's happening today.</p>
+          <p className="text-gray-600 mt-1">Welcome back! Here&apos;s what&apos;s happening today.</p>
         </div>
         <div className="flex gap-3">
+          <UserMenu />
           <button className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
             Export Report
           </button>
@@ -127,60 +128,67 @@ export default function DashboardPage() {
 
       {/* Stats Grid */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {statCards.map((stat, index) => (
-          <Card key={index}>
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">{stat.title}</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-2">
-                    {stat.value.toLocaleString()}
-                  </p>
-                  <div className="flex items-center gap-1 mt-2">
-                    {stat.changeType === 'increase' ? (
-                      <ArrowUpRight className="h-4 w-4 text-green-600" />
-                    ) : (
-                      <ArrowDownRight className="h-4 w-4 text-red-600" />
-                    )}
-                    <span className={`text-sm font-medium ${
-                      stat.changeType === 'increase' ? 'text-green-600' : 'text-red-600'
-                    }`}>
-                      {stat.change}%
-                    </span>
-                    <span className="text-sm text-gray-600">vs last month</span>
+        {statCards.map((stat, index) => {
+          const links = ['/subscriptions', '/subscriptions', '/products', '/customers'];
+          return (
+            <Link key={index} href={links[index]}>
+              <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+                <CardContent className="pt-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-600">{stat.title}</p>
+                      <p className="text-3xl font-bold text-gray-900 mt-2">
+                        {stat.value.toLocaleString()}
+                      </p>
+                      <div className="flex items-center gap-1 mt-2">
+                        {stat.changeType === 'increase' ? (
+                          <ArrowUpRight className="h-4 w-4 text-green-600" />
+                        ) : (
+                          <ArrowDownRight className="h-4 w-4 text-red-600" />
+                        )}
+                        <span className={`text-sm font-medium ${
+                          stat.changeType === 'increase' ? 'text-green-600' : 'text-red-600'
+                        }`}>
+                          {stat.change}%
+                        </span>
+                        <span className="text-sm text-gray-600">vs last month</span>
+                      </div>
+                    </div>
+                    <div className={`p-3 rounded-lg ${stat.bgColor}`}>
+                      <stat.icon className={`h-6 w-6 ${stat.color}`} />
+                    </div>
                   </div>
-                </div>
-                <div className={`p-3 rounded-lg ${stat.bgColor}`}>
-                  <stat.icon className={`h-6 w-6 ${stat.color}`} />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+                </CardContent>
+              </Card>
+            </Link>
+          );
+        })}
       </div>
 
       {/* Alert Banner */}
       {stats.criticalAlerts > 0 && (
-        <Card className="border-l-4 border-l-red-500">
-          <CardContent className="py-4">
-            <div className="flex items-center gap-4">
-              <div className="p-2 bg-red-100 rounded-lg">
-                <Shield className="h-6 w-6 text-red-600" />
+        <Link href="/alerts">
+          <Card className="border-l-4 border-l-red-500 cursor-pointer hover:shadow-lg transition-shadow">
+            <CardContent className="py-4">
+              <div className="flex items-center gap-4">
+                <div className="p-2 bg-red-100 rounded-lg">
+                  <Shield className="h-6 w-6 text-red-600" />
+                </div>
+                <div className="flex-1">
+                  <p className="font-semibold text-gray-900">
+                    {stats.criticalAlerts} Critical Security Alert{stats.criticalAlerts > 1 ? 's' : ''}
+                  </p>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Immediate attention required for security issues detected by Trend Vision One
+                  </p>
+                </div>
+                <button className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors">
+                  View Alerts
+                </button>
               </div>
-              <div className="flex-1">
-                <p className="font-semibold text-gray-900">
-                  {stats.criticalAlerts} Critical Security Alert{stats.criticalAlerts > 1 ? 's' : ''}
-                </p>
-                <p className="text-sm text-gray-600 mt-1">
-                  Immediate attention required for security issues detected by Trend Vision One
-                </p>
-              </div>
-              <button className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors">
-                View Alerts
-              </button>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </Link>
       )}
 
       {/* Provider Status Grid */}
@@ -272,14 +280,14 @@ export default function DashboardPage() {
         <CardContent>
           <div className="space-y-4">
             {[
-              { action: 'New subscription created', provider: 'Also', time: '5 minutes ago', color: 'blue' },
-              { action: 'Product catalog updated', provider: 'TDSynnex', time: '12 minutes ago', color: 'purple' },
-              { action: 'Security alert resolved', provider: 'Trend', time: '23 minutes ago', color: 'red' },
-              { action: 'Customer account modified', provider: 'Also', time: '1 hour ago', color: 'blue' },
-              { action: 'Subscription renewed', provider: 'TDSynnex', time: '2 hours ago', color: 'purple' },
+              { action: 'New subscription created', provider: 'Also', time: '5 minutes ago', color: 'bg-blue-500' },
+              { action: 'Product catalog updated', provider: 'TDSynnex', time: '12 minutes ago', color: 'bg-purple-500' },
+              { action: 'Security alert resolved', provider: 'Trend', time: '23 minutes ago', color: 'bg-red-500' },
+              { action: 'Customer account modified', provider: 'Also', time: '1 hour ago', color: 'bg-blue-500' },
+              { action: 'Subscription renewed', provider: 'TDSynnex', time: '2 hours ago', color: 'bg-purple-500' },
             ].map((activity, index) => (
               <div key={index} className="flex items-center gap-4 pb-4 border-b border-gray-100 last:border-0 last:pb-0">
-                <div className={`h-2 w-2 rounded-full bg-${activity.color}-500`} />
+                <div className={`h-2 w-2 rounded-full ${activity.color}`} />
                 <div className="flex-1">
                   <p className="text-sm font-medium text-gray-900">{activity.action}</p>
                   <p className="text-xs text-gray-500">{activity.provider} • {activity.time}</p>
@@ -290,5 +298,6 @@ export default function DashboardPage() {
         </CardContent>
       </Card>
     </div>
+    </ProtectedRoute>
   );
 }

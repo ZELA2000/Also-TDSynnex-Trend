@@ -16,11 +16,10 @@ import {
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Subscriptions', href: '/dashboard/subscriptions', icon: ShoppingCart },
-  { name: 'Products', href: '/dashboard/products', icon: Package },
-  { name: 'Customers', href: '/dashboard/customers', icon: Users },
-  { name: 'Reports', href: '/dashboard/reports', icon: FileText },
-  { name: 'Security', href: '/dashboard/security', icon: Shield },
+  { name: 'Subscriptions', href: '/subscriptions', icon: ShoppingCart },
+  { name: 'Products', href: '/products', icon: Package },
+  { name: 'Customers', href: '/customers', icon: Users },
+  { name: 'Security Alerts', href: '/alerts', icon: Shield },
 ];
 
 const bottomNavigation = [
@@ -35,7 +34,7 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="flex h-16 items-center px-6 border-b border-gray-800">
         <h1 className="text-xl font-bold">
-          <span className="text-blue-400">Marketplace</span> Hub
+          <span className="text-indigo-400">Unified</span> API
         </h1>
       </div>
 
@@ -50,7 +49,7 @@ export default function Sidebar() {
               className={cn(
                 'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
                 isActive
-                  ? 'bg-gray-800 text-white'
+                  ? 'bg-indigo-600 text-white'
                   : 'text-gray-300 hover:bg-gray-800 hover:text-white'
               )}
             >

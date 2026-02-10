@@ -96,18 +96,43 @@ export interface SecurityAlert {
  */
 export interface User {
   id: string;
-  name: string;
+  username: string;
+  name?: string;
   email: string;
-  role?: string;
+  role?: 'admin' | 'user' | 'viewer';
+  permissions?: string[];
+}
+
+/**
+ * Login credentials
+ */
+export interface LoginCredentials {
+  username: string;
+  password: string;
+  provider?: 'also' | 'tdsynnex';
 }
 
 /**
  * Login response
  */
 export interface LoginResponse {
+  success: boolean;
   token: string;
+  refreshToken?: string;
   user: User;
   expiresIn?: number;
+}
+
+/**
+ * Auth state interface
+ */
+export interface AuthState {
+  user: User | null;
+  token: string | null;
+  refreshToken: string | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  error: string | null;
 }
 
 /**
