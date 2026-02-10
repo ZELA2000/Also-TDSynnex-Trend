@@ -1,0 +1,127 @@
+name: Question / Support
+description: Fai una domanda o richiedi supporto
+title: '[QUESTION] '
+labels: ['question']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Hai una domanda? Siamo qui per aiutarti! Compila il form seguente.
+
+  - type: textarea
+    id: question
+    attributes:
+      label: ❓ Domanda
+      description: Descrivi chiaramente la tua domanda
+      placeholder: Come posso...? / È possibile...? / Perché...?
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: project
+    attributes:
+      label: 📋 Progetto
+      description: Seleziona il progetto a cui si riferisce la domanda
+      options:
+        - label: Also Marketplace API
+        - label: TDSynnex StreamOne API
+        - label: Trend Vision One API
+        - label: Unified Proxy
+        - label: Generale
+
+  - type: textarea
+    id: goal
+    attributes:
+      label: 🎯 Cosa Stai Cercando di Fare
+      description: Descrivi il tuo obiettivo o caso d'uso
+      placeholder: Sto cercando di implementare... / Voglio ottenere...
+    validations:
+      required: true
+
+  - type: textarea
+    id: attempted
+    attributes:
+      label: 🔍 Cosa Hai Già Provato
+      description: Descrivi i passi che hai già tentato per risolvere il problema
+      placeholder: Ho provato a... / Ho seguito il tutorial... / Ho testato...
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-code
+    attributes:
+      label: 💻 Codice Corrente
+      description: Incolla il tuo codice attuale (se applicabile)
+      placeholder: |
+        // Il tuo codice attuale
+        const result = await api.something();
+      render: javascript
+
+  - type: textarea
+    id: result
+    attributes:
+      label: 📊 Risultato Ottenuto
+      description: L'output o errore che stai ricevendo
+      placeholder: |
+        Error: ...
+        o
+        Output attuale: ...
+      render: shell
+
+  - type: checkboxes
+    id: docs-checked
+    attributes:
+      label: 📚 Documentazione Consultata
+      description: Quale documentazione hai già consultato?
+      options:
+        - label: README del progetto
+        - label: Guide Workflow
+        - label: OpenAPI Specification
+        - label: Discussions / Forum
+        - label: Altro
+
+  - type: input
+    id: os
+    attributes:
+      label: 💻 Sistema Operativo
+      description: Il tuo sistema operativo
+      placeholder: Windows 11, Ubuntu 22.04, macOS 14
+
+  - type: input
+    id: node-version
+    attributes:
+      label: 🟢 Node.js Version
+      description: La tua versione di Node.js (esegui `node --version`)
+      placeholder: v18.17.0
+
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: ⏰ Urgenza
+      description: Quanto è urgente questa domanda?
+      options:
+        - Bassa - Curiosità
+        - Media - Vorrei sapere presto
+        - Alta - Sto lavorando su questo
+        - Critica - Bloccato, non posso procedere
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 📝 Informazioni Aggiuntive
+      description: Qualsiasi altro contesto che potrebbe essere utile
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: ✅ Checklist
+      description: Prima di inviare, assicurati di aver completato questi passaggi
+      options:
+        - label: Ho consultato la documentazione pertinente
+          required: true
+        - label: Ho cercato tra issue e discussions esistenti
+          required: true
+        - label: Ho descritto chiaramente cosa sto cercando di ottenere
+          required: true
+        - label: Ho incluso dettagli sul mio ambiente e setup
+          required: false

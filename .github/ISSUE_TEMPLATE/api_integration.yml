@@ -1,0 +1,182 @@
+name: API Integration Issue
+description: Problemi specifici di integrazione con le API esterne
+title: '[API] '
+labels: ['api', 'integration']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Segnala problemi specifici nell'integrazione con le API esterne. **NON includere credenziali reali!**
+
+  - type: dropdown
+    id: api
+    attributes:
+      label: 🔌 API Coinvolta
+      description: Seleziona l'API che sta causando il problema
+      options:
+        - Also Marketplace API
+        - TDSynnex StreamOne Ion API
+        - Trend Vision One API
+    validations:
+      required: true
+
+  - type: dropdown
+    id: issue-type
+    attributes:
+      label: 🐛 Tipo di Problema
+      description: Seleziona il tipo di problema che stai riscontrando
+      options:
+        - Autenticazione fallita
+        - Endpoint non risponde / timeout
+        - Response format errato
+        - Rate limiting
+        - Parametri non accettati
+        - Errore di validazione
+        - Altro
+    validations:
+      required: true
+
+  - type: input
+    id: endpoint
+    attributes:
+      label: 🎯 Endpoint
+      description: L'endpoint completo che stai chiamando
+      placeholder: /api/v1/subscriptions
+    validations:
+      required: true
+
+  - type: dropdown
+    id: http-method
+    attributes:
+      label: 📡 Metodo HTTP
+      description: Il metodo HTTP utilizzato
+      options:
+        - GET
+        - POST
+        - PUT
+        - PATCH
+        - DELETE
+    validations:
+      required: true
+
+  - type: input
+    id: base-url
+    attributes:
+      label: 🌐 Base URL
+      description: L'URL base dell'API
+      placeholder: https://api.example.com
+    validations:
+      required: true
+
+  - type: dropdown
+    id: auth-type
+    attributes:
+      label: 🔐 Tipo di Autenticazione
+      description: Il tipo di autenticazione che stai utilizzando
+      options:
+        - Session Token (Also)
+        - OAuth 2.0 (TDSynnex)
+        - API Key (Trend)
+        - Bearer Token
+        - Altro
+    validations:
+      required: true
+
+  - type: textarea
+    id: auth-issue
+    attributes:
+      label: 🔑 Problema di Autenticazione
+      description: Descrivi se il problema è legato all'autenticazione (NON includere credenziali reali!)
+      placeholder: Il token scade dopo... / L'autenticazione fallisce con errore...
+
+  - type: textarea
+    id: request-headers
+    attributes:
+      label: 📤 Request Headers
+      description: Gli header della richiesta (REDACTED credenziali!)
+      placeholder: |
+        Content-Type: application/json
+        Authorization: Bearer ***REDACTED***
+      render: http
+    validations:
+      required: true
+
+  - type: textarea
+    id: request-body
+    attributes:
+      label: 📦 Request Body
+      description: Il corpo della richiesta (se POST/PUT/PATCH)
+      placeholder: |
+        {
+          "field": "value"
+        }
+      render: json
+
+  - type: textarea
+    id: response-code
+    attributes:
+      label: 📥 Response Status Code
+      description: Il codice di stato HTTP ricevuto
+      placeholder: 401 Unauthorized
+    validations:
+      required: true
+
+  - type: textarea
+    id: response-body
+    attributes:
+      label: 📨 Response Body
+      description: Il corpo della risposta ricevuta
+      placeholder: |
+        {
+          "error": "Unauthorized",
+          "message": "Invalid token"
+        }
+      render: json
+    validations:
+      required: true
+
+  - type: textarea
+    id: error-logs
+    attributes:
+      label: 📋 Error Logs
+      description: Log di errore completi dal client o server
+      render: shell
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: ✅ Comportamento Atteso
+      description: Cosa ti aspettavi che accadesse
+      placeholder: Mi aspettavo una risposta 200 OK con...
+    validations:
+      required: true
+
+  - type: textarea
+    id: api-docs
+    attributes:
+      label: 📚 Riferimento Documentazione API
+      description: Link o riferimento alla documentazione API ufficiale
+      placeholder: https://docs.api.com/endpoint o sezione della documentazione locale
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 📝 Informazioni Aggiuntive
+      description: Qualsiasi altro contesto utile (tentativi fatti, workaround, ecc.)
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: ✅ Checklist
+      description: Prima di inviare, assicurati di aver completato questi passaggi
+      options:
+        - label: Ho verificato che le credenziali siano valide e non scadute
+          required: true
+        - label: Ho redatto (***REDACTED***) tutte le credenziali e informazioni sensibili
+          required: true
+        - label: Ho consultato la documentazione API ufficiale
+          required: true
+        - label: Ho cercato tra le issue esistenti per evitare duplicati
+          required: true
+        - label: Ho incluso i dettagli completi di request e response
+          required: true

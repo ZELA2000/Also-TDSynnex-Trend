@@ -1,0 +1,123 @@
+name: Bug Report
+description: Segnala un bug o un comportamento anomalo
+title: '[BUG] '
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Grazie per aver segnalato questo bug! Compila il form seguente per aiutarci a risolvere il problema.
+
+  - type: dropdown
+    id: project
+    attributes:
+      label: 📋 Progetto Interessato
+      description: Seleziona il progetto in cui si verifica il bug
+      options:
+        - Also Marketplace API
+        - TDSynnex StreamOne API
+        - Trend Vision One API
+        - Unified Proxy
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 🐛 Descrizione del Bug
+      description: Fornisci una descrizione chiara e concisa del problema
+      placeholder: Descrivi cosa non funziona...
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 🔄 Passi per Riprodurre
+      description: Specifica i passi necessari per riprodurre il bug
+      placeholder: |
+        1. Vai a '...'
+        2. Esegui '....'
+        3. Chiama l'endpoint '....'
+        4. Vedi l'errore
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: ✅ Comportamento Atteso
+      description: Descrivi cosa ti aspettavi che accadesse
+      placeholder: Mi aspettavo che...
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: ❌ Comportamento Effettivo
+      description: Descrivi cosa è successo invece
+      placeholder: Invece è successo che...
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 📸 Screenshot / Log
+      description: Se applicabile, aggiungi screenshot o log per aiutare a spiegare il problema
+      placeholder: Incolla qui i log rilevanti o trascina le immagini
+      render: shell
+
+  - type: input
+    id: os
+    attributes:
+      label: 💻 Sistema Operativo
+      description: Es. Windows 11, Ubuntu 22.04, macOS 14
+      placeholder: Windows 11
+    validations:
+      required: true
+
+  - type: input
+    id: node-version
+    attributes:
+      label: 🟢 Node.js Version
+      description: Esegui `node --version` per ottenere la versione
+      placeholder: v18.17.0
+    validations:
+      required: true
+
+  - type: input
+    id: package-version
+    attributes:
+      label: 📦 Package Version
+      description: Versione del package in cui si verifica il bug
+      placeholder: 1.0.0
+
+  - type: input
+    id: browser
+    attributes:
+      label: 🌐 Browser (se applicabile)
+      description: Es. Chrome 120, Firefox 115
+      placeholder: Chrome 120
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 📝 Informazioni Aggiuntive
+      description: Qualsiasi altro contesto o informazione che potrebbe essere utile
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: ✅ Checklist
+      description: Prima di inviare, assicurati di aver completato questi passaggi
+      options:
+        - label: Ho cercato tra le issue esistenti per evitare duplicati
+          required: true
+        - label: Ho verificato che il bug sia riproducibile
+          required: true
+        - label: Ho incluso tutti i dettagli necessari per riprodurre il problema
+          required: true
+        - label: Ho consultato la documentazione pertinente
+          required: false

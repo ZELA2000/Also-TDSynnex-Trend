@@ -1,0 +1,133 @@
+name: Documentation Issue
+description: Segnala problemi o suggerisci miglioramenti alla documentazione
+title: '[DOCS] '
+labels: ['documentation']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Aiutaci a migliorare la documentazione! Segnala errori, informazioni mancanti o suggerisci miglioramenti.
+
+  - type: dropdown
+    id: issue-type
+    attributes:
+      label: 📚 Tipo di Problema
+      description: Seleziona il tipo di problema della documentazione
+      options:
+        - Errore / Informazione Incorretta
+        - Informazione Mancante
+        - Esempio Non Funzionante
+        - Miglioramento / Chiarificazione
+        - Traduzione
+        - Altro
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: project
+    attributes:
+      label: 📋 Progetto
+      description: Seleziona il progetto interessato
+      options:
+        - label: Also Marketplace API
+        - label: TDSynnex StreamOne API
+        - label: Trend Vision One API
+        - label: Unified Proxy
+        - label: README generale
+
+  - type: input
+    id: file-path
+    attributes:
+      label: 📄 File Interessato
+      description: Percorso del file di documentazione
+      placeholder: path/to/file.md o URL
+    validations:
+      required: true
+
+  - type: input
+    id: section
+    attributes:
+      label: 📑 Sezione
+      description: Nome della sezione o heading nella documentazione
+      placeholder: "Autenticazione" o "Getting Started"
+
+  - type: input
+    id: lines
+    attributes:
+      label: 📍 Linee (se applicabile)
+      description: Numero delle linee interessate
+      placeholder: "123-456"
+
+  - type: textarea
+    id: current-problem
+    attributes:
+      label: 🐛 Problema Attuale
+      description: Descrivi cosa c'è di sbagliato o mancante nella documentazione attuale
+      placeholder: La documentazione attuale dice che... ma in realtà...
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-content
+    attributes:
+      label: 📝 Contenuto Attuale
+      description: Il testo o codice attuale che necessita correzione (se applicabile)
+      placeholder: |
+        ```
+        Testo o codice attuale
+        ```
+      render: markdown
+
+  - type: textarea
+    id: proposed-improvement
+    attributes:
+      label: ✅ Miglioramento Proposto
+      description: Descrivi come dovrebbe essere corretta o migliorata la documentazione
+      placeholder: Dovrebbe invece spiegare che...
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggested-content
+    attributes:
+      label: 📋 Contenuto Suggerito
+      description: Il testo o codice suggerito per la correzione
+      placeholder: |
+        ```
+        Testo o codice suggerito
+        ```
+      render: markdown
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: ⚠️ Gravità
+      description: Quanto è grave questo problema di documentazione?
+      options:
+        - Minore - Typo o formattazione
+        - Media - Informazione mancante o poco chiara
+        - Alta - Informazione errata che può causare problemi
+        - Critica - Informazione errata che può causare malfunzionamenti
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 📝 Informazioni Aggiuntive
+      description: Qualsiasi altro contesto, screenshot o riferimenti utili
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: ✅ Checklist
+      description: Prima di inviare, assicurati di aver completato questi passaggi
+      options:
+        - label: Ho verificato che il problema esista nella versione più recente della documentazione
+          required: true
+        - label: Ho cercato tra le issue esistenti per evitare duplicati
+          required: true
+        - label: Ho fornito un suggerimento concreto per il miglioramento
+          required: true
+        - label: Ho verificato che il mio suggerimento sia tecnicamente corretto
+          required: false

@@ -1,0 +1,121 @@
+name: Feature Request
+description: Proponi una nuova funzionalità o miglioramento
+title: '[FEATURE] '
+labels: ['enhancement']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Grazie per il tuo contributo! Descrivi la funzionalità che vorresti vedere implementata.
+
+  - type: checkboxes
+    id: project
+    attributes:
+      label: 📋 Progetto Interessato
+      description: Seleziona uno o più progetti interessati
+      options:
+        - label: Also Marketplace API
+        - label: TDSynnex StreamOne API
+        - label: Trend Vision One API
+        - label: Unified Proxy
+        - label: Documentazione
+        - label: Generale
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 🚀 Descrizione della Funzionalità
+      description: Fornisci una descrizione chiara e concisa della funzionalità che vorresti vedere implementata
+      placeholder: Vorrei che il sistema supportasse...
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 💡 Problema da Risolvere
+      description: Descrivi il problema o la frustrazione che questa funzionalità risolverebbe
+      placeholder: |
+        È frustrante quando devo...
+        Questa funzionalità è importante perché...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: ✨ Soluzione Proposta
+      description: Descrivi la soluzione che vorresti vedere implementata
+      placeholder: La soluzione ideale sarebbe...
+    validations:
+      required: true
+
+  - type: textarea
+    id: usage-example
+    attributes:
+      label: 📝 Esempio di Utilizzo
+      description: Mostra come vorresti usare questa funzionalità
+      placeholder: |
+        ```javascript
+        // Come vorresti usare questa funzionalità
+        const result = await api.newFeature({
+          param1: 'value1',
+          param2: 'value2'
+        });
+        ```
+      render: javascript
+
+  - type: textarea
+    id: api-endpoint
+    attributes:
+      label: 🔌 API Endpoint (se applicabile)
+      description: Descrivi l'endpoint API proposto
+      placeholder: |
+        POST /api/new-endpoint
+        Content-Type: application/json
+        
+        {
+          "field": "value"
+        }
+      render: http
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 🔄 Alternative Considerate
+      description: Hai considerato soluzioni alternative? Descrivi quali e perché non sono adatte
+      placeholder: Ho considerato... ma non è adatto perché...
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: ⚡ Priorità
+      description: Quanto è importante questa funzionalità per te?
+      options:
+        - Bassa - Nice to have
+        - Media - Utile ma non bloccante
+        - Alta - Molto importante
+        - Critica - Bloccante per il progetto
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 📝 Informazioni Aggiuntive
+      description: Qualsiasi altro contesto, screenshot o riferimenti utili
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: ✅ Checklist
+      description: Prima di inviare, assicurati di aver completato questi passaggi
+      options:
+        - label: Ho cercato tra le issue esistenti per evitare duplicati
+          required: true
+        - label: Ho descritto chiaramente il problema che questa feature risolverebbe
+          required: true
+        - label: Ho fornito esempi concreti di utilizzo
+          required: true
+        - label: Ho considerato e descritto eventuali alternative
+          required: false
