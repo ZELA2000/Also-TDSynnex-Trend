@@ -3,16 +3,21 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
+import { useToast } from '@/lib/toast-context';
 import { LogOut, User, Settings } from 'lucide-react';
 
 export function UserMenu() {
   const router = useRouter();
   const { user, logout } = useAuth();
+  const toast = useToast();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
-    router.push('/login');
+    toast.success('Logout successful. See you soon!');
+    setTimeout(() => {
+      router.push('/login');
+    }, 500);
   };
 
   if (!user) return null;

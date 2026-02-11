@@ -3,7 +3,7 @@ import type { ApiResponse, PaginatedResponse } from '@/types';
 
 /**
  * API Client for communicating with the Unified Proxy
- * Base URL: http://localhost:3000 (configurable via env)
+ * Base URL: http://localhost:5000 (WebApp Backend for auth)
  */
 class ApiClient {
   private client: AxiosInstance;
@@ -11,10 +11,10 @@ class ApiClient {
   private retryDelay = 1000; // ms
 
   constructor() {
-    const baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+    const baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
     this.client = axios.create({
-      baseURL,
+      baseURL: `${baseURL}/api`,
       timeout: 30000,
       headers: {
         'Content-Type': 'application/json',

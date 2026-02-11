@@ -3,11 +3,13 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
+import { useToast } from '@/lib/toast-context';
 import type { LoginCredentials } from '@/types';
 
 export default function LoginPage() {
   const router = useRouter();
   const { login, isLoading, error } = useAuth();
+  const toast = useToast();
   
   const [credentials, setCredentials] = useState<LoginCredentials>({
     username: '',
@@ -20,15 +22,22 @@ export default function LoginPage() {
     setLocalError(null);
 
     if (!credentials.username || !credentials.password) {
-      setLocalError('Please enter both username and password');
+      const errorMsg = 'Please enter both username and password';
+      setLocalError(errorMsg);
+      toast.warning(errorMsg);
       return;
     }
 
     try {
       await login(credentials);
-      router.push('/dashboard');
+      toast.success('Login successful! Redirecting...');
+      setTimeout(() => {
+        router.push('/dashboard');
+      }, 500);
     } catch (err) {
-      setLocalError(err instanceof Error ? err.message : 'Login failed');
+      const errorMsg = err instanceof Error ? err.message : 'Login failed';
+      setLocalError(errorMsg);
+      toast.error(errorMsg);
     }
   };
 
