@@ -3,6 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import config from './config';
 import authRoutes from './routes/auth.routes';
+import proxyRoutes from './routes/proxy.routes';
 
 const app: Application = express();
 
@@ -50,6 +51,7 @@ app.get('/', (req: Request, res: Response) => {
 
 // API routes
 app.use('/api/auth', authRoutes);
+app.use('/api', proxyRoutes); // Proxy routes for also, tdsynnex, trend
 
 // 404 handler
 app.use((req: Request, res: Response) => {
