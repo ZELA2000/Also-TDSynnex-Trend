@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { UserMenu } from '@/components/auth/UserMenu';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowUpRight, ArrowDownRight, ShoppingCart, Package, Users, Shield } from 'lucide-react';
 import Link from 'next/link';
 
@@ -167,7 +167,7 @@ export default function DashboardPage() {
 
       {/* Alert Banner */}
       {stats.criticalAlerts > 0 && (
-        <Link href="/alerts">
+        <Link href="/security">
           <Card className="border-l-4 border-l-red-500 cursor-pointer hover:shadow-lg transition-shadow">
             <CardContent className="py-4">
               <div className="flex items-center gap-4">
@@ -246,30 +246,32 @@ export default function DashboardPage() {
         </Card>
 
         {/* Trend Provider */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <div className="h-3 w-3 rounded-full bg-red-500" />
-              Trend Vision One
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Status</span>
-                <span className="font-medium text-green-600">Connected</span>
+        <Link href="/security">
+          <Card className="cursor-pointer hover:shadow-lg transition-shadow h-full">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <div className="h-3 w-3 rounded-full bg-red-500" />
+                Trend Vision One
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Status</span>
+                  <span className="font-medium text-green-600">Connected</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Security Alerts</span>
+                  <span className="font-medium text-red-600">3 Critical</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600">Endpoints Monitored</span>
+                  <span className="font-medium">156</span>
+                </div>
               </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Security Alerts</span>
-                <span className="font-medium text-red-600">3 Critical</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Endpoints Monitored</span>
-                <span className="font-medium">156</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </Link>
       </div>
 
       {/* Recent Activity */}

@@ -3,9 +3,8 @@
 import { useState } from 'react';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { UserMenu } from '@/components/auth/UserMenu';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Shield, AlertTriangle, CheckCircle, XCircle, Clock } from 'lucide-react';
-import Link from 'next/link';
 
 interface SecurityAlert {
   id: string;

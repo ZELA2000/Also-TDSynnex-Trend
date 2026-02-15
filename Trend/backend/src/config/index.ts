@@ -10,19 +10,20 @@ interface Config {
 
 function validateConfig(): Config {
     const apiKey = process.env.TREND_API_KEY;
-    const baseUrl = process.env.TREND_BASE_URL;
-    const port = parseInt(process.env.PORT || '3000', 10);
+    const baseUrl = process.env.TREND_BASE_URL || 'https://api.xdr.trendmicro.com';
+    const port = parseInt(process.env.PORT || '3003', 10);
 
     if (!apiKey) {
-        throw new Error('TREND_API_KEY is required in .env file');
+        console.warn('⚠️  WARNING: TREND_API_KEY not set in .env file. Using placeholder value.');
+        console.warn('⚠️  API calls will fail until you configure a valid API key.');
     }
 
-    if (!baseUrl) {
-        throw new Error('TREND_BASE_URL is required in .env file');
+    if (!process.env.TREND_BASE_URL) {
+        console.warn(`⚠️  WARNING: TREND_BASE_URL not set. Using default: ${baseUrl}`);
     }
 
     return {
-        trendApiKey: apiKey,
+        trendApiKey: apiKey || 'demo_api_key_placeholder',
         trendBaseUrl: baseUrl,
         port,
     };

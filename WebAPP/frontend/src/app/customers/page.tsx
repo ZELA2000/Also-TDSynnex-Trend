@@ -3,9 +3,8 @@
 import { useState } from 'react';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { UserMenu } from '@/components/auth/UserMenu';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, Search, Mail, Phone, Building } from 'lucide-react';
-import Link from 'next/link';
 
 interface Customer {
   id: string;

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { UserMenu } from '@/components/auth/UserMenu';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useSubscriptionsStore } from '@/lib/stores/subscriptions';
 import { useToast } from '@/lib/toast-context';
 import SubscriptionFormModal from '@/components/subscriptions/SubscriptionFormModal';
@@ -318,17 +318,6 @@ export default function SubscriptionDetailPage() {
               <div className="flex gap-3 justify-end">
                 <button
                   onClick={() => setShowDeleteModal(false)}
-
-        {/* Edit Form Modal */}
-        {subscription && (
-          <SubscriptionFormModal
-            isOpen={showEditModal}
-            onClose={() => setShowEditModal(false)}
-            onSubmit={handleUpdate}
-            subscription={subscription}
-            mode="edit"
-          />
-        )}
                   className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
                 >
                   Cancel
@@ -343,6 +332,17 @@ export default function SubscriptionDetailPage() {
               </div>
             </div>
           </div>
+        )}
+
+        {/* Edit Form Modal */}
+        {subscription && (
+          <SubscriptionFormModal
+            isOpen={showEditModal}
+            onClose={() => setShowEditModal(false)}
+            onSubmit={handleUpdate}
+            subscription={subscription}
+            mode="edit"
+          />
         )}
       </div>
     </ProtectedRoute>

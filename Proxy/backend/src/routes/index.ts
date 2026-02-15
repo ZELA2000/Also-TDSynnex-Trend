@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import alsoRoutes from './also.routes';
 import tdsynnexRoutes from './tdsynnex.routes';
 import trendRoutes from './trend.routes';
+import reportsRoutes from './reports.routes';
 
 const router = Router();
 
@@ -51,5 +52,6 @@ router.get('/status', (req: Request, res: Response) => {
 router.use('/also', alsoRoutes);
 router.use('/tdsynnex', tdsynnexRoutes);
 router.use('/trend', trendRoutes);
+router.use('/reports', reportsRoutes);
 
 export default router;

@@ -18,8 +18,9 @@ const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Subscriptions', href: '/subscriptions', icon: ShoppingCart },
   { name: 'Products', href: '/products', icon: Package },
+  { name: 'Security', href: '/security', icon: Shield },
   { name: 'Customers', href: '/customers', icon: Users },
-  { name: 'Security Alerts', href: '/alerts', icon: Shield },
+  { name: 'Reports', href: '/reports', icon: FileText },
 ];
 
 const bottomNavigation = [
@@ -41,7 +42,7 @@ export default function Sidebar() {
       {/* Navigation */}
       <nav className="flex-1 space-y-1 px-3 py-4">
         {navigation.map((item) => {
-          const isActive = pathname === item.href;
+          const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
           return (
             <Link
               key={item.name}

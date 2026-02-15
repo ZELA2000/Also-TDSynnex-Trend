@@ -39,6 +39,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const loadAuthState = () => {
       try {
+        if (typeof window === 'undefined') {
+          setState(prev => ({ ...prev, isLoading: false }));
+          return;
+        }
+
         const token = localStorage.getItem(AUTH_TOKEN_KEY);
         const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
         const userStr = localStorage.getItem(USER_KEY);
@@ -72,9 +77,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   /**
    * Refresh authentication (check if token is still valid)
    */
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const refreshAuth = useCallback(async () => {
-    const { refreshToken } = state;
+    const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
 
     if (!refreshToken) {
       return;
@@ -122,7 +126,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         error: null,
       });
     }
-  }, [state.refreshToken]);
+  }, []);
 
   /**
    * Auto-refresh token periodically
@@ -158,7 +162,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       // Backend returns { success, token, refreshToken, user, expiresIn }
-      const loginData = response as any;
+      const loginData = response as LoginResponse;
       const { token, refreshToken, user } = loginData;
 
       if (!token || !user) {

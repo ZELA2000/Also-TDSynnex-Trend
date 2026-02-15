@@ -1,38 +1,15 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-// Routes che NON richiedono autenticazione
-const publicRoutes = ['/login', '/'];
-
-// Routes protette che richiedono autenticazione
-const protectedRoutes = ['/dashboard'];
+// MIDDLEWARE DISABLED - usando solo ProtectedRoute client-side
+// Per evitare conflitti tra middleware server-side e auth context client-side
 
 export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-  
-  // Controlla se la route è protetta
-  const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route));
-  const isPublicRoute = publicRoutes.includes(pathname);
-
-  // Ottieni il token dai cookies o headers
-  const token = request.cookies.get('auth_token')?.value;
-
-  // Se la route è protetta e non c'è token, redirect a login
-  if (isProtectedRoute && !token) {
-    const loginUrl = new URL('/login', request.url);
-    loginUrl.searchParams.set('redirect', pathname);
-    return NextResponse.redirect(loginUrl);
-  }
-
-  // Se l'utente è autenticato e cerca di accedere al login, redirect alla dashboard
-  if (token && pathname === '/login') {
-    return NextResponse.redirect(new URL('/dashboard', request.url));
-  }
-
+  // Pass through - la protezione delle route è gestita lato client
   return NextResponse.next();
 }
 
-// Configurazione del matcher per specificare quali route devono passare dal middleware
+// Configurazione del matcher - solo per _next
 export const config = {
   matcher: [
     /*
